@@ -48,9 +48,9 @@ public class RSAEncryptor {
      * openssl req -new -key private_key.pem -out rsaCertReq.csr                                                        -> Generate 'rsaCertReq.csr'
      * 
      * 
-     * 3. Create a self-signed certificate with the private key and signing request                                     -> Generate 'rsaCert.crt'
+     * 3. Create a self-signed certificate with the private key and signing request                                     
      * 
-     * openssl x509 -req -days 3650 -in rsaCertReq.csr -signkey private_key.pem -out rsaCert.crt        
+     * openssl x509 -req -days 3650 -in rsaCertReq.csr -signkey private_key.pem -out rsaCert.crt                        -> Generate 'rsaCert.crt'       
      * 
      * 
      * 
@@ -61,7 +61,7 @@ public class RSAEncryptor {
      * 
      * 
      * 5. Export the private key and certificate to p12 file. 
-     * (This step will ask u to enter password, it will be used in your IOS Code, do not forget it)
+     * (This step will ask u to enter password, e.g 'ISAACS' for test, it will be used in your IOS Code, do not forget it)
      * 
      * openssl pkcs12 -export -out private_key.p12 -inkey private_key.pem -in rsaCert.crt                               -> Generate 'private_key.p12' (for IOS to decrypt) 
      * 
@@ -145,7 +145,7 @@ public class RSAEncryptor {
     
     
     
-    
+    // From: http://blog.csdn.net/chaijunkun/article/details/7275632
 
     /** 
      * 私钥 
@@ -384,71 +384,111 @@ public class RSAEncryptor {
     
     
     
+    
  // ___________________________________________ Begin Test  ___________________________________________
     
-    
+    // cat rsa_public_key.pem 
     public static final String DEFAULT_PUBLIC_KEY=   
+            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCeb4zRZnruPoX0tzbF41HEuZ56" + "\r" +
+            "Oyx7DkHKYfgpu4Oo4CrhBZy+im5vGad997A4cE0bqjytgO6KCy5N/PDit75msNfg" + "\r" +
+            "iUB2UXtzAuc6vSh+5aSF7xqMOserCqxIfx9uU6eItuRbFD7FlyR7zNUcSmgbCf4x" + "\r" +
+            "FE7qoIK1PmYWHGF6RwIDAQAB" + "\r";
 
-            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbDRCvwEaVyL0uNHUzZIO1cH7K" + "\r" +
-            "fwaQ/gAJ5VQ1478SqK6st7CiP9jTQMYyDyvUxQgG6KDE2mwPJwHzsYkzzKjH2OJz" + "\r" +
-            "HUXUMSaSVdynTavJtmzdNKe7SPMCYhYqB3BmUgfOY6ZFh37gBwfDVcQ54DIbHCD0" + "\r" +
-            "SUx+AmgPjdJgYZf9zwIDAQAB" + "\r";
-
-      
-    public static final String DEFAULT_PRIVATE_KEY=  
-            "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANsNEK/ARpXIvS40" + "\r" +
-            "dTNkg7Vwfsp/BpD+AAnlVDXjvxKorqy3sKI/2NNAxjIPK9TFCAbooMTabA8nAfOx" + "\r" +
-            "iTPMqMfY4nMdRdQxJpJV3KdNq8m2bN00p7tI8wJiFioHcGZSB85jpkWHfuAHB8NV" + "\r" +
-            "xDngMhscIPRJTH4CaA+N0mBhl/3PAgMBAAECgYEAjzH5SIrvGZeCZCQSwafhmciS" + "\r" +
-            "ehmT11DUAaQS6q+ZBr+SgIIMS+Rk/6SGa88THiI3XxzPjCAlJ7qeQgo64MvXQKcA" + "\r" +
-            "soTH1IgCgF+5WyjOvODNgS59dcQbamYLZcRptNv+79O5mxBsRwyS6HeHqZ24X/v2" + "\r" +
-            "6YfcIEGC1BaJy2dKsPECQQD/VLOGYvoy8PCxhHVPBHxhWc6vcrj2y0PnYcNvP8n0" + "\r" +
-            "M8Wj5mHdnKl2VF7lZt5dwtpZemXD8gmYT4YDiPDduthdAkEA26AGL7lWmAwQXZjL" + "\r" +
-            "6MWlsy92zcfuiGe88N1GIAPPr3dL3HufAW2HHwAQIn3twZhXhldQOm9tiGu0teiG" + "\r" +
-            "tI0cGwJAV5bk5wr5LZR93UfFPlAZowO95W4DiZX9O1jMRFOrofxIposXs4BUmeUj" + "\r" +
-            "kKqTSbLYWK2mT2uuYvOU042co1O/eQJAbd/iGHAdnVWzvk+Z++sdmcZuJkcW09Eq" + "\r" +
-            "WkopMg0WEw+YuUZzZxB3oA+1AryDfO4NI518+q8SWkSgFL2u3pcV7wJBAOQhH0Gn" + "\r" +
-            "HfkHkuqK3v4gHZQVSZ94p/YIWF4prw7OsP345JOSEvvJANJ/pRH9FEIOWTfki1bH" + "\r" +
-            "Edo54moo91zpQ0Y=" + "\r"; 
-    
+    // cat pkcs8_private_key.pem
+    public static final String DEFAULT_PRIVATE_KEY=
+            "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAJ5vjNFmeu4+hfS3" + "\r" +
+            "NsXjUcS5nno7LHsOQcph+Cm7g6jgKuEFnL6Kbm8Zp333sDhwTRuqPK2A7ooLLk38" + "\r" +
+            "8OK3vmaw1+CJQHZRe3MC5zq9KH7lpIXvGow6x6sKrEh/H25Tp4i25FsUPsWXJHvM" + "\r" +
+            "1RxKaBsJ/jEUTuqggrU+ZhYcYXpHAgMBAAECgYAiSjJH/84LUizb0etg2NoRobrS" + "\r" +
+            "6Yuu9l721k1HevX7zsh4+yX5dyx/jyXY9YqGLIgDvMx1ILp/1funlV7tMqdaay5n" + "\r" +
+            "PF8S0xzndL7IJrjYLFZKz2V41/BaxhBdXK4W7IpbOnLlGPHB9o0iMRNiEwh4OkDd" + "\r" +
+            "QgHGXKRpRVVLMmeYAQJBAMqkZy/SJtKJrvwzygTvkaEwYmw1GdkRc1fFaX7XFHVV" + "\r" +
+            "lFrGt2jT6amXWsMvf8eMyQONH76fm2A+xZUna4ZwIMcCQQDIJ01CyuC19g0Oh5o0" + "\r" +
+            "O9WjfRsts8Xie/rwpK32ZuVxt5uebHu/y/rSRztZP53W2Dq6wzu7o+Vxc580muu1" + "\r" +
+            "zVqBAkBk5JITtzhpHvAm1cpBxt3lOWfnpFCoSQ36p2mtI30mJmPlBoePA+OU8qzX" + "\r" +
+            "/bBLNIdo4zzo9iKwOtC5QJVCrFVFAkBE9R1uPJ1ss2fOMLPU+SRinjCl70DnBdXv" + "\r" +
+            "4Jy6vrqgEiUAUNnVu34fwkDVP9Cue3LIc4j53b6n9rDMG+/HhAeBAkAvbv5C2or/" + "\r" +
+            "tz5bTpYoe7VgXXAOJJ/T8Er7w+kLzusA1h4dXEewvVTcpZEnwNHagERMEGoihCei" + "\r" +
+            "4Q6TqiEiTTfW" + "\r";
     
     public static void main(String[] args){  
-        RSAEncryptor rsaEncrypt= new RSAEncryptor();  
-        //rsaEncrypt.genKeyPair();  
-  
-        //加载公钥  
+        
+//            String privateKeyPath = "/Users/Isaacs/Desktop/RSA_KEYS/rsa_public_key.pem";        // replace your public key path here
+//            String publicKeyPath =  "/Users/Isaacs/Desktop/RSA_KEYS/pkcs8_private_key.pem";     // replace your private path here
+//            RSAEncryptor rsaEncryptor = new RSAEncryptor(privateKeyPath, publicKeyPath);
+        
+        RSAEncryptor rsaEncryptor= new RSAEncryptor();  
+//        rsaEncryptor.genKeyPair();    // use this to generate key pairs, or,  use the following codes to load the key pairs with the specified keys you that created by openssl
+        
+        //Load The Public Key  
         try {  
-            rsaEncrypt.loadPublicKey(RSAEncryptor.DEFAULT_PUBLIC_KEY);  
-            System.out.println("加载公钥成功");  
-            System.out.println("公钥长度："+rsaEncrypt.getPublicKey().toString().length());
+            rsaEncryptor.loadPublicKey(RSAEncryptor.DEFAULT_PUBLIC_KEY);  
+            System.out.println("Load Public Key Successfully, length："+rsaEncryptor.getPublicKey().toString().length());
         } catch (Exception e) {  
             System.err.println(e.getMessage());  
-            System.err.println("加载公钥失败");  
+            System.err.println("Load Public Key Failed");  
         }  
-  
-        //加载私钥  
+        //Load The Private Key  
         try {  
-            rsaEncrypt.loadPrivateKey(RSAEncryptor.DEFAULT_PRIVATE_KEY);  
-            System.out.println("加载私钥成功");  
-            System.out.println("私钥长度："+rsaEncrypt.getPrivateKey().toString().length());
+            rsaEncryptor.loadPrivateKey(RSAEncryptor.DEFAULT_PRIVATE_KEY);  
+            System.out.println("Load Private Key Successfully, length："+rsaEncryptor.getPrivateKey().toString().length());
         } catch (Exception e) {  
             System.err.println(e.getMessage());  
-            System.err.println("加载私钥失败");  
+            System.err.println("Load Private Key Failed");  
         }  
+        
+        
+        
+        // After Loaded Public and Private Keys .....
+        
+        
+        
+        // ___________________________________________ The First Test
   
-        //测试字符串  
-        String encryptStr= "JAVA";  
+        System.out.println("\n___________________________________________ The First Test\n");
+        try {
+            
+            String test = "JAVA";
+            String testRSAEnWith64 = rsaEncryptor.encryptWithBase64(test);
+            String testRSADeWith64 = rsaEncryptor.decryptWithBase64(testRSAEnWith64);
+            System.out.println("\nEncrypt: \n" + testRSAEnWith64);
+            System.out.println("\nDecrypt: \n" + testRSADeWith64);
+            
+            // NSLog the encrypt string from Xcode , and paste it here.
+            String rsaBase46StringFromIOS =
+                    "nIIV7fVsHe8QquUbciMYbbumoMtbBuLsCr2yMB/WAhm+S/kGRPlf+k2GH8imZIYQ" + "\r" +
+                    "QBDssVLQmS392QlxS87hnwMRJIzWw6vdRv/k79TgTfu6tI/9QTqIOvNlQIqtIcVm" + "\r" +
+                    "R/suvydoymKgdlB+ce5/tHSxfqEOLLrL1Zl2PqJSP4A=";
+            
+            String decryptStringFromIOS = rsaEncryptor.decryptWithBase64(rsaBase46StringFromIOS);
+            System.out.println("Decrypt result from ios client: \n" + decryptStringFromIOS);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+        
+        // ___________________________________________ The second Test
+        
+        System.out.println("\n___________________________________________ The second Test\n");
         try {  
-            //加密  
-            byte[] cipher = rsaEncrypt.encrypt(rsaEncrypt.getPublicKey(), encryptStr.getBytes());  
-            //解密  
-            byte[] plainText = rsaEncrypt.decrypt(rsaEncrypt.getPrivateKey(), cipher);  
-           
-            System.out.println("Encrypt string: " + encryptStr);
-            System.out.println("Decrypt string: " + new String(plainText));  
+            
+            String encryptStr= "Test123.";  
+            //encrypt 
+            byte[] cipher = rsaEncryptor.encrypt(rsaEncryptor.getPublicKey(), encryptStr.getBytes());  
+            //decrypt 
+            byte[] plainText = rsaEncryptor.decrypt(rsaEncryptor.getPrivateKey(), cipher);  
+            
+            System.out.println("\nBefore Encrypt: \n" + encryptStr);
+            System.out.println("\nAfter Encrypt: \n" + new BASE64Encoder().encode(cipher));  // here no Base64 encode 
+            System.out.println("\nDecrypt: \n" + new String(plainText)); 
+            
         } catch (Exception e) {  
             System.err.println(e.getMessage());  
         }  
+        
     }
    
  // ___________________________________________ End Test  ___________________________________________
