@@ -148,33 +148,31 @@ public class RSAEncryptor {
     // From: http://blog.csdn.net/chaijunkun/article/details/7275632
 
     /** 
-     * 私钥 
+     * Private Key 
      */  
     private RSAPrivateKey privateKey;  
   
     /** 
-     * 公钥 
+     * Public Key 
      */  
     private RSAPublicKey publicKey;  
       
     /** 
-     * 获取私钥 
-     * @return 当前的私钥对象 
+     * Get Private Key 
      */  
     public RSAPrivateKey getPrivateKey() {  
         return privateKey;  
     }  
   
     /** 
-     * 获取公钥 
-     * @return 当前的公钥对象 
+     * Get Public Key
      */  
     public RSAPublicKey getPublicKey() {  
         return publicKey;  
     }  
   
     /** 
-     * 随机生成密钥对 
+     * Generate Key Pair Randomly by JDK
      */  
     public void genKeyPair(){  
         KeyPairGenerator keyPairGen= null;  
@@ -190,110 +188,69 @@ public class RSAEncryptor {
     }  
   
     /** 
-     * 从文件中输入流中加载公钥 
-     * @param in 公钥输入流 
-     * @throws Exception 加载公钥时产生的异常 
+     * Load Public Key From InputStream
      */  
-    public void loadPublicKey(InputStream in) throws Exception{  
-        try {  
-            BufferedReader br= new BufferedReader(new InputStreamReader(in));  
-            String readLine= null;  
-            StringBuilder sb= new StringBuilder();  
-            while((readLine= br.readLine())!=null){  
-                if(readLine.charAt(0)=='-'){  
-                    continue;  
-                }else{  
-                    sb.append(readLine);  
-                    sb.append('\r');  
-                }  
-            }  
-            loadPublicKey(sb.toString());  
-        } catch (IOException e) {  
-            throw new Exception("公钥数据流读取错误");  
-        } catch (NullPointerException e) {  
-            throw new Exception("公钥输入流为空");  
-        }  
+    public void loadPublicKey(InputStream in) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String readLine = null;
+        StringBuilder sb = new StringBuilder();
+        while ((readLine = br.readLine()) != null) {
+            if (readLine.charAt(0) == '-') {
+                continue;
+            } else {
+                sb.append(readLine);
+                sb.append('\r');
+            }
+        }
+        loadPublicKey(sb.toString());
     }  
   
     /** 
-     * 从字符串中加载公钥 
-     * @param publicKeyStr 公钥数据字符串 
-     * @throws Exception 加载公钥时产生的异常 
+     * Load Public Key From String
      */  
-    public void loadPublicKey(String publicKeyStr) throws Exception{  
-        try {  
-            BASE64Decoder base64Decoder= new BASE64Decoder();  
-            byte[] buffer= base64Decoder.decodeBuffer(publicKeyStr);
-            KeyFactory keyFactory= KeyFactory.getInstance("RSA");  
-            X509EncodedKeySpec keySpec= new X509EncodedKeySpec(buffer);  
-            this.publicKey= (RSAPublicKey) keyFactory.generatePublic(keySpec);  
-        } catch (NoSuchAlgorithmException e) {  
-            throw new Exception("无此算法");  
-        } catch (InvalidKeySpecException e) {  
-            throw new Exception("公钥非法");  
-        } catch (IOException e) {  
-            throw new Exception("公钥数据内容读取错误");  
-        } catch (NullPointerException e) {  
-            throw new Exception("公钥数据为空");  
-        }  
+    public void loadPublicKey(String publicKeyStr) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        BASE64Decoder base64Decoder = new BASE64Decoder();
+        byte[] buffer = base64Decoder.decodeBuffer(publicKeyStr);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
+        this.publicKey = (RSAPublicKey) keyFactory.generatePublic(keySpec);
     }  
   
     /** 
-     * 从文件中加载私钥 
-     * @param keyFileName 私钥文件名 
-     * @return 是否成功 
-     * @throws Exception  
-     */  
-    public void loadPrivateKey(InputStream in) throws Exception{  
-        try {  
-            BufferedReader br= new BufferedReader(new InputStreamReader(in));  
-            String readLine= null;  
-            StringBuilder sb= new StringBuilder();  
-            while((readLine= br.readLine())!=null){  
-                if(readLine.charAt(0)=='-'){  
-                    continue;  
-                }else{  
-                    sb.append(readLine);  
-                    sb.append('\r');  
-                }  
-            }  
-            loadPrivateKey(sb.toString());  
-        } catch (IOException e) {  
-            throw new Exception("私钥数据读取错误");  
-        } catch (NullPointerException e) {  
-            throw new Exception("私钥输入流为空");  
-        }  
-    }  
-  
-    public void loadPrivateKey(String privateKeyStr) throws Exception{  
-        try {  
-            BASE64Decoder base64Decoder= new BASE64Decoder();  
-            byte[] buffer= base64Decoder.decodeBuffer(privateKeyStr);  
-            PKCS8EncodedKeySpec keySpec= new PKCS8EncodedKeySpec(buffer);  
-            KeyFactory keyFactory= KeyFactory.getInstance("RSA");  
-            this.privateKey= (RSAPrivateKey) keyFactory.generatePrivate(keySpec);  
-        } catch (NoSuchAlgorithmException e) {  
-            throw new Exception("无此算法");  
-        } catch (InvalidKeySpecException e) {  
-        	e.printStackTrace();
-            throw new Exception("私钥非法");  
-        } catch (IOException e) {  
-            throw new Exception("私钥数据内容读取错误");  
-        } catch (NullPointerException e) {  
-            throw new Exception("私钥数据为空");  
-        }  
+     * Load Private Key From InputStream
+     */
+    public void loadPrivateKey(InputStream in) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {  
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String readLine = null;
+        StringBuilder sb = new StringBuilder();
+        while ((readLine = br.readLine()) != null) {
+            if (readLine.charAt(0) == '-') {
+                continue;
+            } else {
+                sb.append(readLine);
+                sb.append('\r');
+            }
+        }
+        loadPrivateKey(sb.toString()); 
     }  
   
     /** 
-     * 加密过程 
-     * @param publicKey 公钥 
-     * @param plainTextData 明文数据 
-     * @return 
-     * @throws Exception 加密过程中的异常信息 
+     * Load Private Key From String
+     */
+    public void loadPrivateKey(String privateKeyStr) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {  
+        BASE64Decoder base64Decoder = new BASE64Decoder();
+        byte[] buffer = base64Decoder.decodeBuffer(privateKeyStr);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        this.privateKey= (RSAPrivateKey) keyFactory.generatePrivate(keySpec);  
+    }  
+  
+    /** 
+     * Encrypt using Public Key 
      */  
     public byte[] encrypt(RSAPublicKey publicKey, byte[] plainTextData) throws Exception{  
         if(publicKey== null){  
-            throw new Exception("加密公钥为空, 请设置");  
+            throw new Exception("Public Key Should Not Null For Encrypt");  
         }  
         Cipher cipher= null;  
         try {  
@@ -302,29 +259,25 @@ public class RSAEncryptor {
             byte[] output= cipher.doFinal(plainTextData);  
             return output;  
         } catch (NoSuchAlgorithmException e) {  
-            throw new Exception("无此加密算法");  
+            throw new Exception("No Such Algorithm Exception");  
         } catch (NoSuchPaddingException e) {  
             e.printStackTrace();  
             return null;  
         }catch (InvalidKeyException e) {  
-            throw new Exception("加密公钥非法,请检查");  
+            throw new Exception("Invalid Public Key Exception");  
         } catch (IllegalBlockSizeException e) {  
-            throw new Exception("明文长度非法");  
+            throw new Exception("PlainText Illegal Block Size Exception");  
         } catch (BadPaddingException e) {  
-            throw new Exception("明文数据已损坏");  
+            throw new Exception("PlainText Data Corruption or Bad Padding Exception");  
         }  
     }  
   
     /** 
-     * 解密过程 
-     * @param privateKey 私钥 
-     * @param cipherData 密文数据 
-     * @return 明文 
-     * @throws Exception 解密过程中的异常信息 
+     * Decrypt using Private Key 
      */  
     public byte[] decrypt(RSAPrivateKey privateKey, byte[] cipherData) throws Exception{  
         if (privateKey== null){  
-            throw new Exception("解密私钥为空, 请设置");  
+            throw new Exception("Private Key Should Not Null For Decrypt");  
         }  
         Cipher cipher= null;  
         try {  
@@ -333,44 +286,22 @@ public class RSAEncryptor {
             byte[] output= cipher.doFinal(cipherData);  
             return output;  
         } catch (NoSuchAlgorithmException e) {  
-            throw new Exception("无此解密算法");  
+            throw new Exception("No Such Algorithm Exception"); 
         } catch (NoSuchPaddingException e) {  
             e.printStackTrace();  
             return null;  
         }catch (InvalidKeyException e) {  
-            throw new Exception("解密私钥非法,请检查");  
+            throw new Exception("Invalid Private Key Exception");   
         } catch (IllegalBlockSizeException e) {  
-            throw new Exception("密文长度非法");  
+            throw new Exception("Cipher Data Illegal Block Size Exception");  
         } catch (BadPaddingException e) {  
-            throw new Exception("密文数据已损坏");  
+            throw new Exception("Cipher Data Corruption or Bad Padding Exception");  
         }         
     }  
   
     
     
-    /** 
-     * 字节数据转字符串专用集合 
-     */  
-    private static final char[] HEX_CHAR= {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'}; 
-    
-    /** 
-     * 字节数据转十六进制字符串 
-     * @param data 输入数据 
-     * @return 十六进制内容 
-     */  
-    public static String byteArrayToString(byte[] data){  
-        StringBuilder stringBuilder= new StringBuilder();  
-        for (int i=0; i<data.length; i++){  
-            //取出字节的高四位 作为索引得到相应的十六进制标识符 注意无符号右移  
-            stringBuilder.append(HEX_CHAR[(data[i] & 0xf0)>>> 4]);  
-            //取出字节的低四位 作为索引得到相应的十六进制标识符  
-            stringBuilder.append(HEX_CHAR[(data[i] & 0x0f)]);  
-            if (i<data.length-1){  
-                stringBuilder.append(' ');  
-            }  
-        }  
-        return stringBuilder.toString();  
-    }  
+      
     
     
     
