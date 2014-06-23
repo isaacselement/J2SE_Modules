@@ -78,8 +78,8 @@ public class RSAEncryptor {
      */
     
     /**
-     * @param publicKeyFilePath     The file from step 4.
-     * @param privateKeyFilePath    The file from step 5. PKCS#8 format private key file .
+     * @param publicKeyFilePath     The file from step 6 above.
+     * @param privateKeyFilePath    The file from step 7 above. PKCS#8 format private key file .
      */
     public RSAEncryptor(String publicKeyFilePath, String privateKeyFilePath) throws Exception {
         String public_key = getKeyFromFile(publicKeyFilePath);
