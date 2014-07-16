@@ -1,4 +1,4 @@
-package com.modules.Introspector;
+package j2se.modules.Introspector;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;

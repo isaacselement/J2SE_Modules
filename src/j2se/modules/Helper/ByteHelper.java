@@ -1,4 +1,4 @@
-package com.modules.Helper;
+package j2se.modules.Helper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,4 @@
-package com.modules.Encryptor;
+package j2se.modules.Encryptor;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

@@ -1,4 +1,4 @@
-package com.modules.Helper;
+package j2se.modules.Helper;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

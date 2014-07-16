@@ -1,4 +1,4 @@
-package com.modules.Encryptor;
+package j2se.modules.Encryptor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
