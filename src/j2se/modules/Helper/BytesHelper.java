@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
-public class ByteHelper {
+public class BytesHelper {
 
 	public static byte[] int2byte(int res) {
 		byte[] targets = new byte[4];
