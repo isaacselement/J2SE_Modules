@@ -58,8 +58,8 @@ public class IntrospectHelper {
 	 * -> 
 	 * { Business={Client=[address, businessEmployee, ... ]}, Cards={CardsAlbums=[albumName, albumPassword, createDate, ..]}, ... }
 	 */
-	public static Map<String, Map<String, List<String>>> translateToPropertiesMap(List<String> wholeClassNames) {
-		Map<String, Map<String, List<String>>> map = new HashMap<String, Map<String, List<String>>>();
+	public static Map<String, Map<String, Map<String, String>>> translateToPropertiesMap(List<String> wholeClassNames) {
+		Map<String, Map<String, Map<String, String>>> categoriesNamesTypesMap = new HashMap<String, Map<String, Map<String, String>>>();
 		
 		for (Iterator<String> iterator = wholeClassNames.iterator(); iterator.hasNext();) {
 			String wholeClassName = iterator.next();
@@ -72,31 +72,36 @@ public class IntrospectHelper {
 			String categoryName = parts[length - 2];		// Business
 			
 			// category map
-			Map<String, List<String>> categoryMap =  map.get(categoryName);  //  Business={Client=[address, businessEmployee, ... ]
-			if (categoryMap == null) {
-				categoryMap = new HashMap<String, List<String>>();
-				map.put(categoryName, categoryMap);
-			}
+			Map<String, Map<String, String>> categoryNameTypeMap =  categoriesNamesTypesMap.get(categoryName);  //  Business={Client=[address, businessEmployee, ... ]
+			if (categoryNameTypeMap == null) {
+			    categoryNameTypeMap = new HashMap<String, Map<String, String>>();
+			    categoriesNamesTypesMap.put(categoryName, categoryNameTypeMap);
+            }
 			
 			// class properties list
-			List<String> list = new ArrayList<String>();			// [address, businessEmployee, ... ]
+			Map<String, String> modelsMap = new HashMap<String, String>();   // {"address":"Street 1", "businessEmployee": "AE0001", ... }
 			
 			try {
 				Class<?> classObj = Class.forName(wholeClassName);
 				for (PropertyDescriptor pd : Introspector.getBeanInfo(classObj).getPropertyDescriptors()) {
-					String propertyname = pd.getName() ;
-					if (!isClassPropertyName(propertyname)) {
-						list.add(propertyname);
+					String propertyName = pd.getName() ;
+					Class<?> propertyType = pd.getPropertyType();
+					String typeString = propertyType.getName();
+					String[] typeComponents = typeString.split("\\.");
+					String type = typeComponents[typeComponents.length - 1];
+					
+					if (!isClassPropertyName(propertyName)) {
+						modelsMap.put(propertyName, type);
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			categoryMap.put(className, list);					// Client=[address, businessEmployee, ... 			 
+			categoryNameTypeMap.put(className, modelsMap);
 		}
 		
-		return map;
+		return categoriesNamesTypesMap;
 	}
 	
 	public static Set<String> getAllProperties(Object object) throws Exception {
